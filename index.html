@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="TGPSI Share, partilha os teus ficheiros.">
+        <meta name="author" content="D3W10">
+        <meta name="keywords" content="TGPSI Share">
+        <link rel="stylesheet" href="./assets/style.css">
+        <link rel="icon" href="./assets/favicon.png">
+        <title>TGPSI Share</title>
+    </head>
+    <body>
+        <div class="main" id="main">
+            <div class="flexSide" id="flexSide">
+                <div class="sidePanel">
+                    <div class="homePanel" id="homePanel" style="display: block; opacity: 1;">
+                        <a class="doneImg" id="doneImg">
+                            <img class="doneImgChild" src="./assets/icons/done.svg">
+                        </a>
+                        <img class="homeImg" src="./assets/tgpsi-icon.png">
+                        <h1>TGPSI Share</h1>
+                        <p>Bem-vindo ao TGPSI Share</p>
+                        <div class="homeDiv">
+                            <button class="homeButton" id="send">Enviar</button>
+                        </div>
+                        <div class="homeDiv" last="yes">
+                            <button class="homeButton" id="receive">Receber</button>
+                        </div>
+                    </div>
+                    <div class="sendPanel" id="sendPanel" style="display: none; opacity: 0;">
+                        <h2>Enviar</h2>
+                        <p>Selecione os ficheiros a enviar:</p>
+                        <div id="filesInputB" ondragover="dragAndDrop(event, 'over');" ondragleave="dragAndDrop(event, 'leave');" ondrop="dragAndDrop(event, 'drop');">
+                            <div id="filesDiv" style="display: flex; justify-content: center; align-items: center;">
+                                <div class="filesText">
+                                    <span id="filesChoose">Escolher ficheiros</span>
+                                    <br>
+                                    <span id="filesDrop">Ou arraste para aqui!</span>
+                                </div>
+                            </div>
+                            <div class="sendProgress">
+                                <div class="sendProgressBar" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <div class="sendDetails" style="visibility: hidden;">
+                            <p class="sendSizeLabel">Tamanho Total:</p>
+                            <p id="sendSize">NULL</p>
+                        </div>
+                        <input id="filesInput" type="file" onchange="FilePrepare(event, 0)" multiple>
+                        <div class="sideFooter">
+                            <a id="footerBackS">
+                                <img class="footerBackIcon" src="./assets/icons/back.svg">
+                                Voltar
+                            </a>
+                            <div class="sideFooterBtn">
+                                <button class="filesSend" type="submit" onclick="FileSend()" disabled>Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="receivePanel" id="receivePanel" style="display: none; opacity: 0;">
+                        <h2>Receber</h2>
+                        <p>Insira o código de envio:</p>
+                        <input class="fileCode" id="fileCode" type="text" placeholder="Código de Envio" spellcheck="false">
+                        <p class="receiveError" style="visibility: hidden;">NULL</p>
+                        <div class="sideFooter">
+                            <a id="footerBackR">
+                                <img class="footerBackIcon" src="./assets/icons/back.svg">
+                                Voltar
+                            </a>
+                            <div class="sideFooterBtn">
+                                <button class="filesReceive" type="submit" onclick="FileReceive()" disabled>Receber</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="donePanel" id="donePanel" style="display: none; opacity: 0;">
+                        <h2>Enviar</h2>
+                        <p>O ficheiro vai estar disponível durante 7 dias!</p>
+                        <div class="doneInfo" id="doneInfo" style="display: block; opacity: 1;">
+                            <p id="outputCode">NULL</p>
+                            <div class="doneBottom">
+                                <button id="doneCopy" onclick="CopyToClipboard();">Copiar Link</button>
+                                <a onclick="CreateQRCode();" style="margin-left: 30px;">
+                                    <img src="./assets/icons/qrcode.svg" style="width: 30px; height: 30px;">
+                                </a>
+                            </div>
+                        </div>
+                        <div id="doneQR" style="display: none; opacity: 0;"></div>
+                        <div class="sideFooter">
+                            <a id="footerBackD">
+                                <img class="footerBackIcon" src="./assets/icons/back.svg">
+                                Voltar
+                            </a>
+                        </div>
+                    </div>
+                    <div class="downloadPanel" id="downloadPanel" style="display: none; opacity: 0;">
+                        <div class="downloadIcon">
+                            <img class="downloadImg" src="./assets/icons/load.gif" style="animation: rotating 2s linear infinite;">
+                        </div>
+                        <h2 class="downloadH">A Carregar</h2>
+                        <p class="downloadP">Carregando...</p>
+                        <div class="homeDiv" last="yes">
+                            <button class="homeButton" id="b-download" disabled>Transferir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="./assets/js/send.js"></script>
+        <script src="./assets/js/receive.js"></script>
+        <script src="./assets/home.js"></script>
+    </body>
+</html>
