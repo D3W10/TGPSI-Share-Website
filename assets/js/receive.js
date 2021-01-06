@@ -38,7 +38,13 @@ async function FileDownload(FRCode) {
         document.getElementsByClassName("downloadImg")[0].src = "./assets/icons/download.svg";
         document.getElementsByClassName("downloadH")[0].innerHTML = "Está pronto!";
         document.getElementsByClassName("downloadP")[0].innerHTML = "O ficheiro está preparado para ser transferido!";
-        document.getElementById("b-download").on = false;
+        let Expire = HerokuResult.content.expires_at.split("T");
+        let ExpireS = Expire[0].split("-");
+        let ExpireDate = ExpireS[2] + "/" + ExpireS[1] + "/" + ExpireS[0] + " " + Expire[1].replace("Z", "");
+        document.getElementById("downloadExpire").innerHTML = ExpireDate;
+        document.getElementsByClassName("downloadDetails")[0].style.display = "flex";
+        document.getElementById("downloadMessage").innerHTML = HerokuResult.content.description;
+        document.getElementsByClassName("downloadDetails")[1].style.display = "flex";
         document.getElementById("b-download").onclick = function () { FinishDL(`${HerokuResult.downloadURI}`) };
         document.getElementById("b-download").disabled = false;
     }

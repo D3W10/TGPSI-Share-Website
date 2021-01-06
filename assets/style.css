@@ -42,7 +42,7 @@ body {
     right: 0;
     left: 0;
     bottom: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: tgpsifont;
     position: static;
     overflow: hidden;
 }
@@ -109,6 +109,11 @@ input {
     font: inherit;
     display: block;
     border-radius: 10px;
+    transition: background-color 0.4s, color 0.2s;
+}
+
+input:disabled {
+    background-color: rgb(8, 8, 8);
 }
 
 progress {
@@ -281,20 +286,35 @@ progress {
     font-weight: 500;
 }
 
-.sendDetails {
+.sendDetails, .downloadDetails {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
     margin-bottom: 15px;
 }
 
-.sendSizeLabel {
+.firstDetail {
+    margin-bottom: 8px;
+}
+
+.sendSizeLabel, .sendMessageLabel, .downloadExpireLabel, .downloadMessageLabel {
     font-weight: 500;
     margin: 0;
 }
 
-#sendSize {
+#sendSize, #downloadExpire {
     margin: 0;
+}
+
+#sendMessage {
+    margin-left: 8px;
+    width: 171px;
+}
+
+#downloadMessage {
+    margin: 0;
+    width: 171px;
+    text-align: right;
 }
 
 #filesInput {
@@ -476,4 +496,121 @@ progress {
         -o-transform: rotate(360deg);
         transform: rotate(360deg);
     }
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Ultralight.otf);
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-UltralightItalic.otf);
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Thin.otf);
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-ThinItalic.otf);
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Light.otf);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-LightItalic.otf);
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Regular.otf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-RegularItalic.otf);
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Medium.otf);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-MediumItalic.otf);
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Semibold.otf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-SemiboldItalic.otf);
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Bold.otf);
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-BoldItalic.otf);
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Heavy.otf);
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-HeavyItalic.otf);
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Black.otf);
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-BlackItalic.otf);
+    font-weight: 900;
+    font-style: italic;
 }

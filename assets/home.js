@@ -1,8 +1,8 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
-var dlCode = urlParams.get('dl'), QR;
+var dlCode = urlParams.get("dl"), QR;
 const SidePanel = document.getElementsByClassName("sidePanel")[0];
-const SPHeights = {"Home": "316px", "Send": "292px", "Receive": "173px", "Done": "279px"}
+const SPHeights = {"Home": "316px", "Send": "336px", "Receive": "173px", "Done": "279px"}
 
 if (dlCode != undefined || dlCode != null) {
     document.getElementById("homePanel").style.display = "none";
@@ -14,25 +14,38 @@ else {
     SidePanel.style.height = SPHeights.Home;
 }
 
-var xhr = new XMLHttpRequest();
-xhr.onreadystatechange = function() {
-    if (xhr.readyState == XMLHttpRequest.DONE) {
-        var XHRResult = xhr.response;
-        try {
-            XHRResult = JSON.parse(XHRResult);
-            var ImgURL = XHRResult.images[0].url;
-            ImgURL = "https://www.bing.com" + ImgURL;
-            document.getElementsByClassName("main")[0].style.backgroundImage = `url(${ImgURL})`;
-        }
-        catch (error) {
-            console.warn("Usando o fundo pré definido!");
-            document.getElementsByClassName("main")[0].style.backgroundImage = "url(./assets/overview.jpg)";
-        }
+async function ImageOfTheDay() {
+    try {
+        var response123 = await fetchWithTimeout("https://cors-anywhere.herokuapp.com/https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1", {
+            timeout: 3500
+        });
+        var res1245 = await response123.json();
+        var ImgURL = res1245.images[0].url;
+        ImgURL = "https://www.bing.com" + ImgURL;
+        document.getElementById("main").style.backgroundImage = `url(${ImgURL})`;
+    }
+    catch (error) {
+        console.warn("Usando o fundo pré definido!");
+        document.getElementById("main").style.backgroundImage = "url(./assets/overview.jpg)";
     }
 }
-xhr.timeout = 3500;
-xhr.open("GET", "https://cors-anywhere.herokuapp.com/https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1")
-xhr.send();
+
+async function fetchWithTimeout(resource, options) {
+    const { timeout = 8000 } = options;
+    
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+  
+    const response = await fetch(resource, {
+        ...options,
+        signal: controller.signal  
+    });
+    clearTimeout(id);
+  
+    return response;
+}
+
+ImageOfTheDay();
 
 // LISTENERS
 
@@ -201,31 +214,31 @@ async function dragAndDrop(event, mode) {
     event.preventDefault();
     event.stopPropagation();
     if (!document.getElementById("filesInputB").hasAttribute("lock")) {
-        if (mode == 'over') {
-            document.getElementById('filesChoose').innerText = "Preparado para enviar!";
-            document.getElementById('filesDrop').innerText = "Apenas larga-o e eu trato do resto!";
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.getElementById('filesInputB').style.borderColor = "var(--dark-grey-plus-plus)";
+        if (mode == "over") {
+            document.getElementById("filesChoose").innerText = "Preparado para enviar!";
+            document.getElementById("filesDrop").innerText = "Apenas larga-o e eu trato do resto!";
+            if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                document.getElementById("filesInputB").style.borderColor = "var(--dark-grey-plus-plus)";
             }
             else {
-                document.getElementById('filesInputB').style.borderColor = "var(--light-grey-plus-plus)";
+                document.getElementById("filesInputB").style.borderColor = "var(--light-grey-plus-plus)";
             }
         }
         else {
-            if (mode == 'leave') {
-                document.getElementById('filesChoose').innerText = "Escolher ficheiros";
-                document.getElementById('filesDrop').innerText = "Ou arraste para aqui!";
-                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    document.getElementById('filesInputB').style.borderColor = "var(--dark-grey)";
+            if (mode == "leave") {
+                document.getElementById("filesChoose").innerText = "Escolher ficheiros";
+                document.getElementById("filesDrop").innerText = "Ou arraste para aqui!";
+                if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+                    document.getElementById("filesInputB").style.borderColor = "var(--dark-grey)";
                 }
                 else {
-                    document.getElementById('filesInputB').style.borderColor = "var(--light-grey)";
+                    document.getElementById("filesInputB").style.borderColor = "var(--light-grey)";
                 }
             }
             else {
-                if (mode == 'drop') {
-                    document.getElementById('filesChoose').innerText = "Escolher ficheiros";
-                    document.getElementById('filesDrop').innerText = "Ou arraste para aqui!";
+                if (mode == "drop") {
+                    document.getElementById("filesChoose").innerText = "Escolher ficheiros";
+                    document.getElementById("filesDrop").innerText = "Ou arraste para aqui!";
                     colorizeBorder();
                     FilePrepare(event, 1);
                 }
@@ -235,21 +248,21 @@ async function dragAndDrop(event, mode) {
 }
 
 function colorizeBorder() {
-    document.getElementById('filesInputB').style.borderColor = "#FF3B30";
+    document.getElementById("filesInputB").style.borderColor = "#FF3B30";
     setTimeout(() => {
-        document.getElementById('filesInputB').style.borderColor = "#FF9500";
+        document.getElementById("filesInputB").style.borderColor = "#FF9500";
         setTimeout(() => {
-            document.getElementById('filesInputB').style.borderColor = "#FFCC00";
+            document.getElementById("filesInputB").style.borderColor = "#FFCC00";
             setTimeout(() => {
-                document.getElementById('filesInputB').style.borderColor = "#34C759";
+                document.getElementById("filesInputB").style.borderColor = "#34C759";
                 setTimeout(() => {
-                    document.getElementById('filesInputB').style.borderColor = "#007AFF";
+                    document.getElementById("filesInputB").style.borderColor = "#007AFF";
                     setTimeout(() => {
-                        document.getElementById('filesInputB').style.borderColor = "#5856D6";
+                        document.getElementById("filesInputB").style.borderColor = "#5856D6";
                         setTimeout(() => {
-                            document.getElementById('filesInputB').style.borderColor = "#AF52DE";
+                            document.getElementById("filesInputB").style.borderColor = "#AF52DE";
                             setTimeout(() => {
-                                document.getElementById('filesInputB').removeAttribute("style");
+                                document.getElementById("filesInputB").removeAttribute("style");
                             }, 200);
                         }, 200);
                     }, 200);

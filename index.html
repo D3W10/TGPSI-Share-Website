@@ -6,6 +6,7 @@
         <meta name="description" content="TGPSI Share, partilha os teus ficheiros.">
         <meta name="author" content="D3W10">
         <meta name="keywords" content="TGPSI Share">
+        <meta name="wtapi" content="qYrf0foxOCaGK1TNs4DMV8mtlLlmR5w18HZKazDd">
         <link rel="stylesheet" href="./assets/style.css">
         <link rel="icon" href="./assets/favicon.png">
         <title>TGPSI Share</title>
@@ -43,9 +44,13 @@
                                 <div class="sendProgressBar" style="width: 0%;"></div>
                             </div>
                         </div>
-                        <div class="sendDetails" style="visibility: hidden;">
+                        <div class="sendDetails firstDetail">
                             <p class="sendSizeLabel">Tamanho Total:</p>
-                            <p id="sendSize">NULL</p>
+                            <p id="sendSize" style="visibility: hidden;">NULL</p>
+                        </div>
+                        <div class="sendDetails">
+                            <p class="sendMessageLabel">Mensagem:</p>
+                            <input id="sendMessage" type="text" placeholder="Opcional" spellcheck="false" autocomplete="off" disabled>
                         </div>
                         <input id="filesInput" type="file" onchange="FilePrepare(event, 0)" multiple>
                         <div class="sideFooter">
@@ -61,7 +66,7 @@
                     <div class="receivePanel" id="receivePanel" style="display: none; opacity: 0;">
                         <h2>Receber</h2>
                         <p>Insira o código de envio:</p>
-                        <input class="fileCode" id="fileCode" type="text" placeholder="Código de Envio" spellcheck="false">
+                        <input class="fileCode" id="fileCode" type="text" placeholder="Código de Envio" spellcheck="false" autocomplete="off">
                         <p class="receiveError" style="visibility: hidden;">NULL</p>
                         <div class="sideFooter">
                             <a id="footerBackR">
@@ -99,6 +104,14 @@
                         </div>
                         <h2 class="downloadH">A Carregar</h2>
                         <p class="downloadP">Carregando...</p>
+                        <div class="downloadDetails firstDetail" style="display: none;">
+                            <p class="downloadExpireLabel">Válido até:</p>
+                            <p id="downloadExpire">NULL</p>
+                        </div>
+                        <div class="downloadDetails" style="display: none;">
+                            <p class="downloadMessageLabel">Mensagem:</p>
+                            <p id="downloadMessage">NULL</p>
+                        </div>
                         <div class="homeDiv" last="yes">
                             <button class="homeButton" id="b-download" disabled>Transferir</button>
                         </div>
