@@ -1,8 +1,8 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 var dlCode = urlParams.get("dl"), QR;
-const SidePanel = document.getElementsByClassName("sidePanel")[0];
-const SPHeights = {"Home": "316px", "Send": "336px", "Receive": "173px", "Done": "279px"}
+const SidePanel = document.getElementById("sidePanel");
+const SPHeights = {"Home": "316px", "Send": "329px", "Receive": "173px", "Done": "279px"}
 
 if (dlCode != undefined || dlCode != null) {
     document.getElementById("homePanel").style.display = "none";
@@ -92,6 +92,8 @@ document.getElementById("footerBackR").addEventListener("click", () => {
     setTimeout(() => {
         document.getElementById("receivePanel").style.display = "none";
         SidePanel.style.height = SPHeights.Home;
+        document.getElementById("receiveDetails").style.visibility = "hidden";
+        document.getElementById("receiveMessage").classList.remove("rmAnimate");
         document.getElementById("homePanel").style.display = "block";
         setTimeout(() => {
             document.getElementById("homePanel").style.opacity = "1";
@@ -107,10 +109,10 @@ document.getElementById("filesInputB").addEventListener("click", () => {
 
 document.getElementById("fileCode").addEventListener("keyup", (event) => {
     if (document.getElementById("fileCode").value.length == 0) {
-        document.getElementsByClassName("filesReceive")[0].disabled = true;
+        document.getElementById("filesReceive").disabled = true;
     }
     else {
-        document.getElementsByClassName("filesReceive")[0].disabled = false;
+        document.getElementById("filesReceive").disabled = false;
         if (event.key == "Enter")
             FileReceive();
     }

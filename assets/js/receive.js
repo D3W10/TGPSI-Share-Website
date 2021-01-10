@@ -1,24 +1,38 @@
 async function FileReceive() {
-    document.getElementsByClassName('filesReceive')[0].disabled = true;
+    document.getElementById("filesReceive").disabled = true;
     var LoadIcon = document.createElement("img");
     LoadIcon.src = "./assets/icons/load.gif";
     LoadIcon.classList.add("sideFooterLoad");
     LoadIcon.style.marginTop = "8px";
-    document.getElementsByClassName("sideFooterBtn")[1].insertBefore(LoadIcon, document.getElementsByClassName("filesReceive")[0]);
+    document.getElementsByClassName("sideFooterBtn")[1].insertBefore(LoadIcon, document.getElementById("filesReceive"));
     let FRCode = document.getElementById("fileCode").value;
     var HerokuResult = await fetch(`https://tgpsi-share.herokuapp.com/${FRCode}`, {
         method: "GET"
     });
     HerokuResult = await HerokuResult.json();
     if (HerokuResult.downloadURI == "Invalid Code") {
-        document.getElementsByClassName("receiveError")[0].innerHTML = "Este código é inválido!";
-        document.getElementsByClassName("receiveError")[0].style.visibility = "visible";
+        document.getElementById("receiveError").innerHTML = "Este código é inválido!";
+        document.getElementById("receiveDetails").style.display = "none";
+        document.getElementById("receiveMessage").classList.remove("rmAnimate");
+        document.getElementById("receiveError").style.display = "block";
+        LoadIcon.parentElement.removeChild(LoadIcon);
     }
     else {
         document.getElementsByClassName("sideFooterBtn")[1].removeChild(LoadIcon);
-        FinishDL(HerokuResult.downloadURI);
+        await FinishDL(HerokuResult.downloadURI);
+        document.getElementById("receiveMessage").innerHTML = HerokuResult.content.description;
+        if (document.getElementById("receiveMessage").getBoundingClientRect().width > 171) {
+            document.getElementById("receiveMessage").classList.add("rmAnimate");
+        }
+        else {
+            document.getElementById("receiveMessageLimit").style.textAlign = "right";
+            document.getElementById("receiveMessage").style.position = "unset";
+        }
+        document.getElementById("receiveError").style.display = "none";
+        document.getElementById("receiveDetails").style.display = "flex";
+        document.getElementById("receiveDetails").style.visibility = "visible";
     }
-    document.getElementsByClassName("filesReceive")[0].disabled = false;
+    document.getElementById("filesReceive").disabled = false;
 }
 
 async function FileDownload(FRCode) {
@@ -27,17 +41,17 @@ async function FileDownload(FRCode) {
     });
     HerokuResult = await HerokuResult.json();
     if (HerokuResult.downloadURI == "Invalid Code") {
-        document.getElementsByClassName("downloadImg")[0].style = "";
-        document.getElementsByClassName("downloadImg")[0].src = "./assets/icons/error.svg";
-        document.getElementsByClassName("downloadH")[0].innerHTML = "Código Inválido!";
-        document.getElementsByClassName("downloadP")[0].innerHTML = "Este código não é válido, verifique se o link é o correto.";
+        document.getElementById("downloadImg").style = "";
+        document.getElementById("downloadImg").src = "./assets/icons/error.svg";
+        document.getElementById("downloadH").innerHTML = "Código Inválido!";
+        document.getElementById("downloadP").innerHTML = "Este código não é válido, verifique se o link é o correto.";
         document.getElementsByClassName("homeDiv")[2].removeChild(document.getElementById("b-download"));
     }
     else {
-        document.getElementsByClassName("downloadImg")[0].style = "";
-        document.getElementsByClassName("downloadImg")[0].src = "./assets/icons/download.svg";
-        document.getElementsByClassName("downloadH")[0].innerHTML = "Está pronto!";
-        document.getElementsByClassName("downloadP")[0].innerHTML = "O ficheiro está preparado para ser transferido!";
+        document.getElementById("downloadImg").style = "";
+        document.getElementById("downloadImg").src = "./assets/icons/download.svg";
+        document.getElementById("downloadH").innerHTML = "Está pronto!";
+        document.getElementById("downloadP").innerHTML = "O ficheiro está preparado para ser transferido!";
         let Expire = HerokuResult.content.expires_at.split("T");
         let ExpireS = Expire[0].split("-");
         let ExpireDate = ExpireS[2] + "/" + ExpireS[1] + "/" + ExpireS[0] + " " + Expire[1].replace("Z", "");

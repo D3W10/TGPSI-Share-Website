@@ -4,7 +4,7 @@ var FilesInfoBridge, WTFileList = new Array(), RCount = 0, byteUnits = ["Bytes",
 function FilePrepare(event, type) {
     let fileSizeTxtTotal = 0;
     document.getElementById("sendMessage").disabled = false;
-    document.getElementsByClassName("filesSend")[0].disabled = false;
+    document.getElementById("filesSend").disabled = false;
     if (type == 1) {
         FilesInfoBridge = event.dataTransfer.files;
         for (let i = 0; i < FilesInfoBridge.length; i++)
@@ -34,7 +34,7 @@ function FilePrepare(event, type) {
 function addFiles(event, type, reverse) {
     if (reverse == 0) {
         var fileDiv, fileName, fileNameTxt, fileSize = 0, fileSizeTxt = 0;
-        document.getElementsByClassName("filesText")[0].style.display = "none";
+        document.getElementById("filesText").style.display = "none";
         document.getElementById("filesDiv").style.justifyContent = "unset";
         document.getElementById("filesDiv").style.alignItems = "unset";
         document.querySelectorAll(".filesDivT").forEach(function(FileElmt) {
@@ -99,7 +99,7 @@ function addFiles(event, type, reverse) {
         lastType = type;
     }
     else {
-        document.getElementsByClassName("filesText")[0].style.display = "block";
+        document.getElementById("filesText").style.display = "block";
         document.getElementById("filesDiv").style.display = "flex";
         document.getElementById("filesDiv").style.justifyContent = "center";
         document.getElementById("filesDiv").style.alignItems = "center";
@@ -114,135 +114,177 @@ async function FileSend() {
         document.getElementById("footerBackS").setAttribute("lock", "");
         document.getElementById("filesInputB").setAttribute("lock", "");
         document.getElementById("sendMessage").disabled = true;
-        document.getElementsByClassName("filesSend")[0].disabled = true;
+        document.getElementById("filesSend").disabled = true;
         var LoadIcon = document.createElement("img");
         LoadIcon.src = "./assets/icons/load.gif";
         LoadIcon.classList.add("sideFooterLoad");
-        document.getElementsByClassName("sideFooterBtn")[0].insertBefore(LoadIcon, document.getElementsByClassName("filesSend")[0]);
-        // PART 1 - START
-        let response1 = await fetch("https://dev.wetransfer.com/v2/authorize", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-api-key": `${APIKey}`
-            },
-            body: JSON.stringify({ "user_identifier": "5eb6b98e-ddaa-4f5b-9d03-7bd4d91aa05f" })
-        });
-        if (response1.status !== 200)
-            return console.warn("Parece que houve um problema. Código de Erro: " + response1.status);
-        let data1 = await response1.json()
-        const Token = data1.token;
-        console.info("Parte 1 - Completa");
-        document.getElementsByClassName("sendProgressBar")[0].style.width = "5%";
-        // PART 1 - END
-
-        // PART 2 - START
-        for (let i = 0; i < FilesInfoBridge.length; i++)
-            WTFileList[i] = {"name": `${FilesInfoBridge[i].name}`, "size": `${FilesInfoBridge[i].size}`}
-        let Message = document.getElementById("sendMessage").value;
-        let response2 = await fetch("https://dev.wetransfer.com/v2/transfers", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-api-key": `${APIKey}`,
-                "Authorization": `Bearer ${Token}`
-            },
-            body: JSON.stringify({ "message": Message, "files": WTFileList })
-        });
-        if (response2.status !== 201)
-            return console.warn("Parece que houve um problema. Código de Erro: " + response2.status);
-        let data2 = await response2.json()
-        console.info("Parte 2 - Completa");
-        document.getElementsByClassName("sendProgressBar")[0].style.width = "10%";
-        // PART 2 - END
-
-        // PART 3 - START
-        var ProgressBarSplit = 90 / FilesInfoBridge.length;
-        for (let i = 0; i < FilesInfoBridge.length; i++) {
-            let response3 = await fetch(`https://dev.wetransfer.com/v2/transfers/${data2.id}/files/${data2.files[i].id}/upload-url/1`, {
-                method: "GET",
+        document.getElementsByClassName("sideFooterBtn")[0].insertBefore(LoadIcon, document.getElementById("filesSend"));
+        try {
+            // PART 1 - START
+            let response1 = await fetch("https://dev.wetransfer.com/v2/authorize", {
+                method: "POST",
                 headers: {
-                    "x-api-key": `${APIKey}`,
-                    "Authorization": `Bearer ${Token}`
-                }
+                    "Content-Type": "application/json",
+                    "x-api-key": `${APIKey}`
+                },
+                body: JSON.stringify({ "user_identifier": "5eb6b98e-ddaa-4f5b-9d03-7bd4d91aa05f" })
             });
-            if (response3.status !== 200)
-                return console.warn("Parece que houve um problema. Código de Erro: " + response3.status);
-            let data3 = await response3.json()
-            console.info(`Parte 3.${i + 1} - Completa`);
-            document.getElementsByClassName("sendProgressBar")[0].style.width = `${Number(document.getElementsByClassName("sendProgressBar")[0].style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
-            // PART 3 - END
+            if (response1.status !== 200)
+                return console.warn("Parece que houve um problema. Código de Erro: " + response1.status);
+            let data1 = await response1.json()
+            const Token = data1.token;
+            console.info("Parte 1 - Completa");
+            document.getElementById("sendProgressBar").style.width = "5%";
+            // PART 1 - END
 
-            // PART 4 - START
-            let response4 = await fetch(`${data3.url}`, {
-                method: "PUT",
-                body: FilesInfoBridge[i]
-            });
-            console.info(`Parte 4.${i + 1} - Completa`);
-            document.getElementsByClassName("sendProgressBar")[0].style.width = `${Number(document.getElementsByClassName("sendProgressBar")[0].style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
-            // PART 4 - END
-
-            // PART 5 - START
-            let response5 = await fetch(`https://dev.wetransfer.com/v2/transfers/${data2.id}/files/${data2.files[i].id}/upload-complete`, {
-                method: "PUT",
+            // PART 2 - START
+            for (let i = 0; i < FilesInfoBridge.length; i++)
+                WTFileList[i] = {"name": `${FilesInfoBridge[i].name}`, "size": `${FilesInfoBridge[i].size}`}
+            let Message = document.getElementById("sendMessage").value;
+            if (Message.length == 0)
+                Message = "<i>Sem mensagem</i>";
+            let response2 = await fetch("https://dev.wetransfer.com/v2/transfers", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "x-api-key": `${APIKey}`,
                     "Authorization": `Bearer ${Token}`
                 },
-                body: JSON.stringify({ "part_numbers": 1 })
+                body: JSON.stringify({ "message": Message, "files": WTFileList })
             });
-            if (response5.status !== 200)
-                return console.warn("Parece que houve um problema. Código de Erro: " + response5.status);
-            console.info(`Parte 5.${i + 1} - Completa`);
-            document.getElementsByClassName("sendProgressBar")[0].style.width = `${Number(document.getElementsByClassName("sendProgressBar")[0].style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
-            // PART 5 - END
-        }
-        // PART 6 - START
-        let response6 = await fetch(`https://dev.wetransfer.com/v2/transfers/${data2.id}/finalize`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "x-api-key": `${APIKey}`,
-                "Authorization": `Bearer ${Token}`
+            if (response2.status !== 201)
+                return console.warn("Parece que houve um problema. Código de Erro: " + response2.status);
+            let data2 = await response2.json()
+            console.info("Parte 2 - Completa");
+            document.getElementById("sendProgressBar").style.width = "10%";
+            // PART 2 - END
+
+            // PART 3 - START
+            var ProgressBarSplit = 90 / FilesInfoBridge.length;
+            for (let i = 0; i < FilesInfoBridge.length; i++) {
+                let response3 = await fetch(`https://dev.wetransfer.com/v2/transfers/${data2.id}/files/${data2.files[i].id}/upload-url/1`, {
+                    method: "GET",
+                    headers: {
+                        "x-api-key": `${APIKey}`,
+                        "Authorization": `Bearer ${Token}`
+                    }
+                });
+                if (response3.status !== 200)
+                    return console.warn("Parece que houve um problema. Código de Erro: " + response3.status);
+                let data3 = await response3.json()
+                console.info(`Parte 3.${i + 1} - Completa`);
+                document.getElementById("sendProgressBar").style.width = `${Number(document.getElementById("sendProgressBar").style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
+                // PART 3 - END
+
+                // PART 4 - START
+                let response4 = await fetch(`${data3.url}`, {
+                    method: "PUT",
+                    body: FilesInfoBridge[i]
+                });
+                console.info(`Parte 4.${i + 1} - Completa`);
+                document.getElementById("sendProgressBar").style.width = `${Number(document.getElementById("sendProgressBar").style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
+                // PART 4 - END
+
+                // PART 5 - START
+                let response5 = await fetch(`https://dev.wetransfer.com/v2/transfers/${data2.id}/files/${data2.files[i].id}/upload-complete`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-api-key": `${APIKey}`,
+                        "Authorization": `Bearer ${Token}`
+                    },
+                    body: JSON.stringify({ "part_numbers": 1 })
+                });
+                if (response5.status !== 200)
+                    return console.warn("Parece que houve um problema. Código de Erro: " + response5.status);
+                console.info(`Parte 5.${i + 1} - Completa`);
+                document.getElementById("sendProgressBar").style.width = `${Number(document.getElementById("sendProgressBar").style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
+                // PART 5 - END
             }
-        });
-        if (response6.status !== 200)
-            return console.warn("Parece que houve um problema. Código de Erro: " + response6.status);
-        let data6 = await response6.json()
-        console.info("Parte 6 - Completa");
-        document.getElementsByClassName("sendProgressBar")[0].style.width = "100%";
-        // PART 6 - END
+            // PART 6 - START
+            let response6 = await fetch(`https://dev.wetransfer.com/v2/transfers/${data2.id}/finalize`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": `${APIKey}`,
+                    "Authorization": `Bearer ${Token}`
+                }
+            });
+            if (response6.status !== 200)
+                return console.warn("Parece que houve um problema. Código de Erro: " + response6.status);
+            let data6 = await response6.json()
+            console.info("Parte 6 - Completa");
+            document.getElementById("sendProgressBar").style.width = "100%";
+            // PART 6 - END
 
-        // PART 7 - START
-        var outputURL = data6.url.replace("https://we.tl/t-", "");
-        document.getElementById("outputCode").innerHTML = outputURL;
-        let randomColorNum = Math.floor(Math.random() * 7);
-        let response7 = await fetch("https://discord.com/api/webhooks/780517198808350753/g4eBIPOZEyOwQfJ-xCdh5UMdYshM6Wtfq5tk8E_Uab6a-YS6Op9q9-d2CGCYTqtGlVSa", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ "embeds": [ { "title": "TGPSI Share", "description": `Alguém acabou de enviar um novo ficheiro para o TGPSI Share!\`\`\`${outputURL}\`\`\`\n[Transferir Agora](${data6.url})`, "color": `${embedColors[randomColorNum]}` } ] })
-        });
-        // PART 7 - END
+            // PART 7 - START
+            var outputURL = data6.url.replace("https://we.tl/t-", "");
+            document.getElementById("outputCode").innerHTML = outputURL;
+            let randomColorNum = Math.floor(Math.random() * 7);
+            let response7 = await fetch("https://discord.com/api/webhooks/780517198808350753/g4eBIPOZEyOwQfJ-xCdh5UMdYshM6Wtfq5tk8E_Uab6a-YS6Op9q9-d2CGCYTqtGlVSa", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ "embeds": [ { "title": "TGPSI Share", "description": `Alguém acabou de enviar um novo ficheiro para o TGPSI Share!\`\`\`${outputURL}\`\`\`\n[Transferir Agora](${data6.url})`, "color": `${embedColors[randomColorNum]}` } ] })
+            });
+            // PART 7 - END
 
-        document.getElementById("sendPanel").style.opacity = "0";
-        setTimeout(() => {
-            document.getElementById("sendPanel").style.display = "none";
-            document.getElementsByClassName("sidePanel")[0].style.height = "279px";
-            document.getElementsByClassName("sendProgressBar")[0].style.width = "0%";
+            document.getElementById("sendPanel").style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById("sendPanel").style.display = "none";
+                document.getElementById("sidePanel").style.height = "279px";
+                document.getElementById("sendProgressBar").style.width = "0%";
+                document.getElementsByClassName("sideFooterBtn")[0].removeChild(LoadIcon);
+                document.getElementById("footerBackS").removeAttribute("lock");
+                document.getElementById("filesInputB").removeAttribute("lock");
+                document.getElementById("doneImg").style.visibility = "visible";
+                document.getElementById("sendSize").style.visibility = "hidden";
+                document.getElementById("sendMessage").value = "";
+                document.getElementById("filesChoose").innerHTML = "Escolher ficheiros";
+                document.getElementById("filesDrop").innerHTML = "Ou arraste para aqui!";
+                addFiles(undefined, undefined, 1);
+                document.getElementById("donePanel").style.display = "block";
+                setTimeout(() => {
+                    document.getElementById("donePanel").style.opacity = "1";
+                }, 400);
+            }, 400);
+        } catch (error) {
+            document.getElementById("filesChoose").innerHTML = "Erro";
+            document.getElementById("filesDrop").innerHTML = "Houve um erro ao enviar os ficheiros!";
+            document.getElementById("sendProgressBar").style.visibility = "hidden";
+            document.getElementById("sendProgressBar").style.width = "0%";
+            setTimeout(() => {
+                document.getElementById("sendProgressBar").style.visibility = "visible";
+            }, 200);
             document.getElementsByClassName("sideFooterBtn")[0].removeChild(LoadIcon);
             document.getElementById("footerBackS").removeAttribute("lock");
             document.getElementById("filesInputB").removeAttribute("lock");
             document.getElementById("doneImg").style.visibility = "visible";
             document.getElementById("sendSize").style.visibility = "hidden";
-            document.getElementById("sendMessage").value = "";
             addFiles(undefined, undefined, 1);
-            document.getElementById("donePanel").style.display = "block";
+            document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
             setTimeout(() => {
-                document.getElementById("donePanel").style.opacity = "1";
-            }, 400);
-        }, 400);
+                document.getElementById("filesInputB").removeAttribute("style");
+                setTimeout(() => {
+                    document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
+                    setTimeout(() => {
+                        document.getElementById("filesInputB").removeAttribute("style");
+                        setTimeout(() => {
+                            document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
+                            setTimeout(() => {
+                                document.getElementById("filesInputB").removeAttribute("style");
+                                setTimeout(() => {
+                                    document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
+                                    setTimeout(() => {
+                                        document.getElementById("filesInputB").removeAttribute("style");
+                                    }, 200);
+                                }, 200);
+                            }, 200);
+                        }, 200);
+                    }, 200);
+                }, 200);
+            }, 200);
+        }
     }
 }
