@@ -17,22 +17,20 @@
                 <div id="sidePanel">
                     <div id="homePanel" style="display: block; opacity: 1;">
                         <a id="doneImg">
-                            <img id="doneImgChild" src="./assets/icons/done.svg">
+                            <img src="./assets/icons/done.svg">
                         </a>
-                        <img id="homeImg" src="./assets/tgpsi-icon.png">
+                        <a href="https://tgpsi-apps.netlify.app">
+                            <img id="homeImg" src="./assets/TGPSIShare.png">
+                        </a>
                         <h1>TGPSI Share</h1>
                         <p>Bem-vindo ao TGPSI Share</p>
-                        <div class="homeDiv">
-                            <button class="homeButton" id="send">Enviar</button>
-                        </div>
-                        <div class="homeDiv" last="yes">
-                            <button class="homeButton" id="receive">Receber</button>
-                        </div>
+                        <button id="openSendButton">Enviar</button>
+                        <button id="openReceiveButton">Receber</button>
                     </div>
                     <div id="sendPanel" style="display: none; opacity: 0;">
                         <h2>Enviar</h2>
                         <p>Selecione os ficheiros a enviar:</p>
-                        <div id="filesInputB" ondragover="dragAndDrop(event, 'over');" ondragleave="dragAndDrop(event, 'leave');" ondrop="dragAndDrop(event, 'drop');">
+                        <div id="filesInputBox" ondragover="dragAndDrop(event, 'over');" ondragleave="dragAndDrop(event, 'leave');" ondrop="dragAndDrop(event, 'drop');">
                             <div id="filesDiv" style="display: flex; justify-content: center; align-items: center;">
                                 <div id="filesText">
                                     <span id="filesChoose">Escolher ficheiros</span>
@@ -46,7 +44,7 @@
                         </div>
                         <div class="sendDetails firstDetail">
                             <p id="sendSizeLabel">Tamanho Total:</p>
-                            <p id="sendSize" style="visibility: hidden;">NULL</p>
+                            <p id="sendSize" style="visibility: hidden;">null</p>
                         </div>
                         <div class="sendDetails">
                             <p id="sendMessageLabel">Mensagem:</p>
@@ -67,11 +65,13 @@
                         <h2>Receber</h2>
                         <p>Insira o código de envio:</p>
                         <input id="fileCode" type="text" placeholder="Código de Envio" spellcheck="false" autocomplete="off">
-                        <p id="receiveError" style="display: none;">NULL</p>
+                        <p id="receiveError" style="display: none;">null</p>
                         <div id="receiveDetails" style="visibility: hidden;">
                             <p id="receiveMessageLabel">Mensagem:</p>
-                            <div id="receiveMessageLimit">
-                                <p id="receiveMessage">NULL</p>
+                            <div id="receiveMessageMask">
+                                <div id="receiveMessageLimit">
+                                    <p id="receiveMessage">null</p>
+                                </div>
                             </div>
                         </div>
                         <div class="sideFooter">
@@ -88,7 +88,7 @@
                         <h2>Enviar</h2>
                         <p>O ficheiro vai estar disponível durante 7 dias!</p>
                         <div id="doneInfo" style="display: block; opacity: 1;">
-                            <p id="outputCode">NULL</p>
+                            <p id="outputCode">null</p>
                             <div id="doneBottom">
                                 <button id="doneCopy" onclick="CopyToClipboard();">Copiar Link</button>
                                 <a onclick="CreateQRCode();" style="margin-left: 30px;">
@@ -96,7 +96,9 @@
                                 </a>
                             </div>
                         </div>
-                        <div id="doneQR" style="display: none; opacity: 0;"></div>
+                        <div id="doneQR" style="display: none; opacity: 0;">
+                            <canvas></canvas>
+                        </div>
                         <div class="sideFooter">
                             <a id="footerBackD">
                                 <img class="footerBackIcon" src="./assets/icons/back.svg">
@@ -112,15 +114,17 @@
                         <p id="downloadP">Carregando...</p>
                         <div class="downloadDetails firstDetail" style="display: none;">
                             <p id="downloadExpireLabel">Válido até:</p>
-                            <p id="downloadExpire">NULL</p>
+                            <p id="downloadExpire">null</p>
                         </div>
                         <div class="downloadDetails" style="display: none;">
                             <p id="downloadMessageLabel">Mensagem:</p>
-                            <p id="downloadMessage">NULL</p>
+                            <div id="downloadMessageMask">
+                                <div id="downloadMessageLimit">
+                                    <p id="downloadMessage">null</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="homeDiv" last="yes">
-                            <button class="homeButton" id="b-download" disabled>Transferir</button>
-                        </div>
+                        <button id="downloadFileButton" disabled>Transferir</button>
                     </div>
                 </div>
             </div>
@@ -128,5 +132,6 @@
         <script src="./assets/js/send.js"></script>
         <script src="./assets/js/receive.js"></script>
         <script src="./assets/home.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     </body>
 </html>

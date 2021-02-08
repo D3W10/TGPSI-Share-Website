@@ -7,8 +7,10 @@ function FilePrepare(event, type) {
     document.getElementById("filesSend").disabled = false;
     if (type == 1) {
         FilesInfoBridge = event.dataTransfer.files;
+        if (FilesInfoBridge.length == 0)
+            return;
         for (let i = 0; i < FilesInfoBridge.length; i++)
-            fileSizeTxtTotal += FilesInfoBridge[i].size
+            fileSizeTxtTotal += FilesInfoBridge[i].size;
         do {
             fileSizeTxtTotal /= 1024;
             RCount++;
@@ -18,8 +20,10 @@ function FilePrepare(event, type) {
     }
     else {
         FilesInfoBridge = event.srcElement.files;
+        if (FilesInfoBridge.length == 0)
+            return;
         for (let i = 0; i < FilesInfoBridge.length; i++)
-            fileSizeTxtTotal += FilesInfoBridge[i].size
+            fileSizeTxtTotal += FilesInfoBridge[i].size;
         do {
             fileSizeTxtTotal /= 1024;
             RCount++;
@@ -112,7 +116,7 @@ function addFiles(event, type, reverse) {
 async function FileSend() {
     if (FilesInfoBridge != undefined) {
         document.getElementById("footerBackS").setAttribute("lock", "");
-        document.getElementById("filesInputB").setAttribute("lock", "");
+        document.getElementById("filesInputBox").setAttribute("lock", "");
         document.getElementById("sendMessage").disabled = true;
         document.getElementById("filesSend").disabled = true;
         var LoadIcon = document.createElement("img");
@@ -121,17 +125,16 @@ async function FileSend() {
         document.getElementsByClassName("sideFooterBtn")[0].insertBefore(LoadIcon, document.getElementById("filesSend"));
         try {
             // PART 1 - START
+            let UUID = await UUIDManager();
             let response1 = await fetch("https://dev.wetransfer.com/v2/authorize", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "x-api-key": `${APIKey}`
+                    "x-api-key": APIKey
                 },
-                body: JSON.stringify({ "user_identifier": "5eb6b98e-ddaa-4f5b-9d03-7bd4d91aa05f" })
+                body: JSON.stringify({ "user_identifier": UUID })
             });
-            if (response1.status !== 200)
-                return console.warn("Parece que houve um problema. Código de Erro: " + response1.status);
-            let data1 = await response1.json()
+            let data1 = await response1.json();
             const Token = data1.token;
             console.info("Parte 1 - Completa");
             document.getElementById("sendProgressBar").style.width = "5%";
@@ -152,8 +155,6 @@ async function FileSend() {
                 },
                 body: JSON.stringify({ "message": Message, "files": WTFileList })
             });
-            if (response2.status !== 201)
-                return console.warn("Parece que houve um problema. Código de Erro: " + response2.status);
             let data2 = await response2.json()
             console.info("Parte 2 - Completa");
             document.getElementById("sendProgressBar").style.width = "10%";
@@ -169,8 +170,6 @@ async function FileSend() {
                         "Authorization": `Bearer ${Token}`
                     }
                 });
-                if (response3.status !== 200)
-                    return console.warn("Parece que houve um problema. Código de Erro: " + response3.status);
                 let data3 = await response3.json()
                 console.info(`Parte 3.${i + 1} - Completa`);
                 document.getElementById("sendProgressBar").style.width = `${Number(document.getElementById("sendProgressBar").style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
@@ -195,8 +194,6 @@ async function FileSend() {
                     },
                     body: JSON.stringify({ "part_numbers": 1 })
                 });
-                if (response5.status !== 200)
-                    return console.warn("Parece que houve um problema. Código de Erro: " + response5.status);
                 console.info(`Parte 5.${i + 1} - Completa`);
                 document.getElementById("sendProgressBar").style.width = `${Number(document.getElementById("sendProgressBar").style.width.replace("%", "")) + ProgressBarSplit / 3}%`;
                 // PART 5 - END
@@ -210,8 +207,6 @@ async function FileSend() {
                     "Authorization": `Bearer ${Token}`
                 }
             });
-            if (response6.status !== 200)
-                return console.warn("Parece que houve um problema. Código de Erro: " + response6.status);
             let data6 = await response6.json()
             console.info("Parte 6 - Completa");
             document.getElementById("sendProgressBar").style.width = "100%";
@@ -226,18 +221,19 @@ async function FileSend() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ "embeds": [ { "title": "TGPSI Share", "description": `Alguém acabou de enviar um novo ficheiro para o TGPSI Share!\`\`\`${outputURL}\`\`\`\n[Transferir Agora](${data6.url})`, "color": `${embedColors[randomColorNum]}` } ] })
+                body: JSON.stringify({ "embeds": [ { "title": "TGPSI Share", "description": `Alguém acabou de enviar um novo ficheiro para o TGPSI Share!\`\`\`${outputURL}\`\`\`\n[Transferir Agora](https://tgpsi-share.netlify.app/?dl=${outputURL})`, "color": `${embedColors[randomColorNum]}` } ] })
             });
+            console.info("Parte 7 - Completa");
             // PART 7 - END
 
             document.getElementById("sendPanel").style.opacity = "0";
             setTimeout(() => {
                 document.getElementById("sendPanel").style.display = "none";
-                document.getElementById("sidePanel").style.height = "279px";
+                document.getElementById("sidePanel").style.height = "299px";
                 document.getElementById("sendProgressBar").style.width = "0%";
                 document.getElementsByClassName("sideFooterBtn")[0].removeChild(LoadIcon);
                 document.getElementById("footerBackS").removeAttribute("lock");
-                document.getElementById("filesInputB").removeAttribute("lock");
+                document.getElementById("filesInputBox").removeAttribute("lock");
                 document.getElementById("doneImg").style.visibility = "visible";
                 document.getElementById("sendSize").style.visibility = "hidden";
                 document.getElementById("sendMessage").value = "";
@@ -259,32 +255,29 @@ async function FileSend() {
             }, 200);
             document.getElementsByClassName("sideFooterBtn")[0].removeChild(LoadIcon);
             document.getElementById("footerBackS").removeAttribute("lock");
-            document.getElementById("filesInputB").removeAttribute("lock");
-            document.getElementById("doneImg").style.visibility = "visible";
+            document.getElementById("filesInputBox").removeAttribute("lock");
             document.getElementById("sendSize").style.visibility = "hidden";
             addFiles(undefined, undefined, 1);
-            document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
-            setTimeout(() => {
-                document.getElementById("filesInputB").removeAttribute("style");
-                setTimeout(() => {
-                    document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
-                    setTimeout(() => {
-                        document.getElementById("filesInputB").removeAttribute("style");
-                        setTimeout(() => {
-                            document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
-                            setTimeout(() => {
-                                document.getElementById("filesInputB").removeAttribute("style");
-                                setTimeout(() => {
-                                    document.getElementById("filesInputB").style.borderColor = "var(--soft-red)";
-                                    setTimeout(() => {
-                                        document.getElementById("filesInputB").removeAttribute("style");
-                                    }, 200);
-                                }, 200);
-                            }, 200);
-                        }, 200);
-                    }, 200);
-                }, 200);
-            }, 200);
+            for (let i = 0; i < 4; i++) {
+                document.getElementById("filesInputBox").style.borderColor = "var(--soft-red)";
+                await sleep(200);
+                document.getElementById("filesInputBox").removeAttribute("style");
+                await sleep(200);
+            }
         }
     }
+}
+
+async function UUIDManager() {
+    let num = new Array(), UUID;
+    if(localStorage.getItem("UUID") == null) {
+        for (let i = 0; i < 15; i++) {
+            num[i] = Math.floor(Math.random() * 10);
+        }
+        UUID = num[0] + "eb" + num[1] + "b" + num[2] + num[3] + "e-ddaa-" + num[4] + "f" + num[5] + "b-" + num[6] + "d" + num[7] + num[8] + "-" + num[9] + "bd" + num[10] + "d" + num[11] + num[12] + "aa" + num[13] + num[14] + "f";
+        localStorage.setItem("UUID", UUID);
+    }
+    else
+        UUID = localStorage.getItem("UUID");
+    return UUID
 }

@@ -6,9 +6,40 @@
         <meta name="description" content="TGPSI Share, partilha os teus ficheiros.">
         <meta name="author" content="D3W10">
         <meta name="keywords" content="TGPSI Share">
-        <link rel="icon" href="../assets/favicon.png">
+        <link rel="stylesheet" href="https://tgpsi-share.netlify.app/assets/style.css">
+        <link rel="icon" href="https://tgpsi-share.netlify.app/assets/favicon.png">
         <title>TGPSI Share</title>
-        <meta http-equiv="refresh" content="0;url=https://tgpsi-share.netlify.app/"/>
     </head>
-    <body></body>
+    <body>
+        <div id="main">
+            <div id="flexSide">
+                <div id="sidePanel">
+                    <div id="redirectPanel">
+                        <div id="redirectIcon">
+                            <img id="redirectImg" src="https://tgpsi-share.netlify.app/assets/icons/load.gif" style="animation: rotating 2s linear infinite;">
+                        </div>
+                        <h2 id="redirectH">Aguarde</h2>
+                        <p id="redirectP">A redirecionar para a Página Principal...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var IODBackground = document.createElement("style");
+
+            (async function () {
+                try {
+                    var utilsResponse = await fetch("https://tgpsi-utils.herokuapp.com/imageofday");
+                    var Img = await utilsResponse.json();
+                    IODBackground.innerHTML = `#main { background-image: url(${Img.URL}); }`;
+                } catch (error) {
+                    console.warn("Usando o fundo pré definido!");
+                    IODBackground.innerHTML = "#main { background-image: url(https://tgpsi-share.netlify.app/assets/overview.jpg); }";
+                }
+                document.head.appendChild(IODBackground);
+            })();
+
+            window.open("https://tgpsi-share.netlify.app/", "_self");
+        </script>
+    </body>
 </html>
