@@ -3,42 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="TGPSI Share, partilha os teus ficheiros.">
-        <meta name="author" content="D3W10">
+        <meta name="description" content="Partilha os teus ficheiros!">
+        <meta name="author" content="Daniel Nunes">
         <meta name="keywords" content="TGPSI Share">
         <link rel="stylesheet" href="https://tgpsi-share.netlify.app/assets/style.css">
-        <link rel="icon" href="https://tgpsi-share.netlify.app/assets/favicon.png">
+        <link rel="icon" href="https://tgpsi-share.netlify.app/assets/logo.png">
         <title>TGPSI Share</title>
     </head>
     <body>
-        <div id="main">
-            <div id="flexSide">
-                <div id="sidePanel">
-                    <div id="redirectPanel">
-                        <div id="redirectIcon">
-                            <img id="redirectImg" src="https://tgpsi-share.netlify.app/assets/icons/load.gif" style="animation: rotating 2s linear infinite;">
-                        </div>
-                        <h2 id="redirectH">Aguarde</h2>
-                        <p id="redirectP">A redirecionar para a Página Principal...</p>
-                    </div>
-                </div>
-            </div>
+        <div>
+            <img src="https://tgpsi-share.netlify.app/assets/load.gif">
+            <h1>Aguarde</h1>
+            <p>A redirecionar para a Página Principal...</p>
         </div>
         <script>
-            var IODBackground = document.createElement("style");
-
-            (async function () {
-                try {
-                    var utilsResponse = await fetch("https://tgpsi-utils.herokuapp.com/imageofday");
-                    var Img = await utilsResponse.json();
-                    IODBackground.innerHTML = `#main { background-image: url(${Img.URL}); }`;
-                } catch (error) {
-                    console.warn("Usando o fundo pré definido!");
-                    IODBackground.innerHTML = "#main { background-image: url(https://tgpsi-share.netlify.app/assets/overview.jpg); }";
-                }
-                document.head.appendChild(IODBackground);
-            })();
-
             window.open("https://tgpsi-share.netlify.app/", "_self");
         </script>
     </body>
