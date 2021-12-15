@@ -1,0 +1,616 @@
+:root {
+    --light-grey: #efefef;
+    --light-grey-plus: #dfdfdf;
+    --light-grey-plus-plus: #cfcfcf;
+    --dark-grey: #101010;
+    --dark-grey-plus: #202020;
+    --dark-grey-plus-plus: #303030;
+    --soft-blue: #007aff;
+    --soft-red: #ff3b30;
+    --soft-green: #34c759;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--light-grey-plus);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--light-grey-plus-plus);
+}
+
+* {
+    scroll-behavior: smooth;
+}
+
+html {
+    position: static;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    font-family: tgpsifont;
+    position: static;
+    overflow: hidden;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+h2 {
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+p {
+    margin: 2px 0 15px 0;
+    padding: 0;
+    font-weight: 300;
+}
+
+span {
+    font-weight: 300;
+}
+
+button {
+    border: 0;
+    display: block;
+    outline: 0;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 10px 30px 10px 30px;
+    font: inherit;
+    font-weight: bold;
+    transition: background-color 0.4s, color 0.2s;
+    background-color: var(--light-grey);
+}
+
+button:hover {
+    background-color: var(--light-grey-plus);
+}
+
+button:disabled {
+    color: #444444;
+}
+
+button:disabled:hover {
+    cursor: default;
+    background-color: var(--light-grey);
+}
+
+a {
+    color: var(--soft-blue);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+input {
+    background-color: var(--light-grey);
+    border: 0;
+    outline: 0;
+    width: -webkit-fill-available;
+    padding: 5px 8px 5px 8px;
+    font: inherit;
+    display: block;
+    border-radius: 10px;
+    transition: background-color 0.4s, color 0.2s;
+}
+
+input:disabled {
+    background-color: rgb(8, 8, 8);
+}
+
+progress {
+    width: 100%;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--light-grey);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.flexSide {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: -webkit-fill-available;
+}
+
+.sidePanel {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1), 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+    margin-right: 5em;
+    top: 50%;
+    transition: height 0.4s;
+    width: 17.5em;
+    padding: 10px;
+}
+
+.sideFooter {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 39px;
+}
+
+#footerBackS, #footerBackR, #footerBackD {
+    display: flex;
+    align-items: center;
+    transition: opacity 0.2s;
+}
+
+#footerBackS[lock], #footerBackR[lock], #footerBackD[lock] {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.footerBackIcon {
+    height: 14px;
+    margin-right: 5px;
+}
+
+.sideFooterBtn {
+    display: flex;
+    align-items: center;
+}
+
+.sideFooterLoad {
+    height: 30px;
+    width: auto;
+    margin-right: 10px;
+    animation: rotating 2s linear infinite;
+}
+
+/* HOME SCREEN */
+
+.homePanel {
+    transition: opacity 0.4s;
+    text-align: center;
+}
+
+.doneImg {
+    visibility: hidden;
+    position: absolute;
+    right: 90px;
+}
+
+.doneImgChild {
+    display: block;
+    width: 26px;
+}
+
+.homeImg {
+    width: 150px;
+    height: 150px;
+}
+
+.homeDiv {
+    margin-bottom: 10px;
+}
+
+.homeDiv[last="yes"] {
+    margin-bottom: 0px;
+}
+
+.homeButton {
+    width: 100%;
+}
+
+/* SEND SCREEN */
+
+.sendPanel {
+    transition: opacity 0.4s;
+    text-align: left;
+    padding: 3px;
+}
+
+#filesInputB {
+    border-style: solid;
+    border-color: var(--light-grey);
+    border-width: 5px;
+    height: 130px;
+    background-color: unset;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: border-color 0.2s;
+}
+
+#filesDiv {
+    padding: 8px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    overflow: auto;
+}
+
+.filesText {
+    text-align: center;
+}
+
+#filesChoose {
+    font-size: 17px;
+    font-weight: 500;
+}
+
+#filesDrop {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.sendProgress {
+    margin: 0 5px 0 5px;
+}
+
+.sendProgressBar {
+    height: 5px;
+    background-color: var(--soft-blue);
+    border-radius: 15px;
+    transition: width 0.2s;
+}
+
+.filesDivT {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.filesDivT:last-child {
+    margin-bottom: 0;
+}
+
+.filesDivTT {
+    font-weight: 500;
+}
+
+.sendDetails, .downloadDetails {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+.firstDetail {
+    margin-bottom: 8px;
+}
+
+.sendSizeLabel, .sendMessageLabel, .downloadExpireLabel, .downloadMessageLabel {
+    font-weight: 500;
+    margin: 0;
+}
+
+#sendSize, #downloadExpire {
+    margin: 0;
+}
+
+#sendMessage {
+    margin-left: 8px;
+    width: 171px;
+}
+
+#downloadMessage {
+    margin: 0;
+    width: 171px;
+    text-align: right;
+}
+
+#filesInput {
+    display: none;
+}
+
+.filesSend {
+    float: right;
+}
+
+/* RECEIVE SCREEN */
+
+.receivePanel {
+    transition: opacity 0.4s;
+    text-align: left;
+    padding: 3px;
+}
+
+.receiveError {
+    color: #ff3b30;
+    font-weight: 500;
+    margin: 5px 0 5px 0;
+}
+
+.filesReceive {
+    margin-top: 10px;
+    float: right;
+}
+
+/* DONE SCREEN */
+
+.donePanel {
+    transition: opacity 0.4s;
+    text-align: left;
+    padding: 3px;
+}
+
+.doneInfo {
+    text-align: center;
+    transition: opacity 0.4s;
+    padding: 30px 0;
+}
+
+#outputCode {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    background-color: unset;
+    user-select: text;
+    -webkit-user-select: text;
+    -ms-user-select: text;
+    -moz-user-select: text;
+}
+
+.doneBottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+#doneQR {
+    transition: opacity 0.4s;
+    height: 140px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* DOWNLOAD SCREEN */
+
+.downloadPanel {
+    transition: opacity 0.4s;
+    text-align: center;
+}
+
+.downloadIcon {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.downloadImg {
+    width: auto;
+    height: 80px;
+}
+
+.downloadH {
+    text-align: center;
+}
+
+.downloadP {
+    margin-top: 7px;
+}
+
+@media screen and (max-width: 480px) {
+    .flexSide {
+        justify-content: center;
+    }
+
+    .sidePanel {
+        margin-right: 0;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--dark-grey-plus);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--dark-grey-plus-plus);
+        border-radius: 10px;
+    }
+
+    button {
+        background-color: var(--dark-grey);
+        color: #ffffff;
+    }
+    
+    button:hover {
+        background-color: var(--dark-grey-plus);
+    }
+
+    button:disabled {
+        color: #bbbbbb;
+    }
+
+    button:disabled:hover {
+        background-color: var(--dark-grey);
+    }
+
+    input {
+        background-color: var(--dark-grey);
+        color: #ffffff;
+    }
+
+    .main {
+        background-color: var(--dark-grey);
+        color: #ffffff;
+    }
+
+    .sidePanel {
+        background-color: #000000;
+        color: #ffffff;
+    }
+
+    #filesInputB {
+        border-color: var(--dark-grey);
+    }
+}
+
+@-webkit-keyframes rotating {
+    from {
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Ultralight.otf);
+    font-weight: 100;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-UltralightItalic.otf);
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Thin.otf);
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-ThinItalic.otf);
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Light.otf);
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-LightItalic.otf);
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Regular.otf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-RegularItalic.otf);
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Medium.otf);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-MediumItalic.otf);
+    font-weight: 500;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Semibold.otf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-SemiboldItalic.otf);
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Bold.otf);
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-BoldItalic.otf);
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Heavy.otf);
+    font-weight: 800;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-HeavyItalic.otf);
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-Black.otf);
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: tgpsifont;
+    src: url(fonts/TGPSIFont-BlackItalic.otf);
+    font-weight: 900;
+    font-style: italic;
+}

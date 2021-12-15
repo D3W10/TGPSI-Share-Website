@@ -1,5 +1,5 @@
 :root {
-    --back: rgba(240, 240, 240, 0.9);
+    --back: rgba(240, 240, 240, 0.3);
     --tone: rgba(0, 0, 0, 0.1);
     --tiny: rgba(0, 0, 0, 0.15);
     --little: rgba(0, 0, 0, 0.2);
@@ -22,14 +22,17 @@ body {
     justify-content: flex-end;
     user-select: none;
     color: var(--text);
-    background: url(./overview.jpg) #888888 no-repeat fixed center;
+    background-color: #888888;
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     font-family: tgpsifont, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    letter-spacing: 0.3px;
 }
 
 h1 {
-    font-size: 2em;
     margin: 20px 0 0 0;
+    font-size: 2em;
 }
 
 p {
@@ -46,19 +49,20 @@ img {
 }
 
 button {
-    border: 0;
+    width: 100%;
     display: block;
-    outline: 0;
-    cursor: pointer;
-    border-radius: 10px;
+    margin-top: 10px;
     padding: 10px 30px 10px 30px;
+    border: 0;
+    outline: 0;
+    color: var(--text);
+    background-color: var(--tone);
     font: inherit;
     font-weight: bold;
+    letter-spacing: inherit;
+    border-radius: 10px;
+    cursor: pointer;
     transition: background-color 0.4s, color 0.2s;
-    width: 100%;
-    margin-top: 10px;
-    background-color: var(--tone);
-    color: var(--text);
 }
 
 button:hover {
@@ -69,23 +73,49 @@ button:active {
     background-color: var(--little);
 }
 
-div {
+a {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    color: var(--text);
+    background-color: var(--back);
+    padding: 5px 10px;
+    font-weight: bold;
+    border-radius: 10px;
+    backdrop-filter: blur(3px);
+    text-decoration: unset;
+}
+
+a > span {
+    font-weight: 300;
+}
+
+hr {
+    width: 3px;
+    margin: 0 10px;
+    border: 0;
+    border-radius: 100vh;
+    background-color: var(--little);
+}
+
+#card {
+    width: 18em;
+    margin-right: 5em;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: var(--back);
     border-radius: 15px;
     filter: var(--backShadow);
-    margin-right: 5em;
     transition: height 0.4s;
-    width: 18em;
-    padding: 10px;
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+    backdrop-filter: blur(6px);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --back: rgba(15, 15, 15, 0.9);
+        --back: rgba(15, 15, 15, 0.3);
         --tone: rgba(255, 255, 255, 0.1);
         --tiny: rgba(255, 255, 255, 0.15);
         --little: rgba(255, 255, 255, 0.2);
