@@ -1,28 +1,11 @@
 (async function () {
-    var panelSizes = {};
-
-    window.addEventListener("load", () => {
-        for (const panel of document.querySelectorAll("#card > *")) {
-            panelSizes[panel.id] = (panel.offsetHeight + 20) + "px";
-            if (panel.id == "homePanel") {
-                document.getElementById("homePanel").style.display = "block";
-                document.getElementById("homePanel").style.opacity = "1";
-                document.getElementById("card").style.height = panelSizes.homePanel;
-            }
-            else {
-                panel.style.display = "none";
-                panel.style.opacity = "0";
-            }
-        }
-    });
-
-    //#region UNSPLASH BACKGROUND
-
+    let panelSizes = { "homePanel": "295px", "downloadPanel": "236px" };
     let randomQuery = null, unsplashAK = document.getElementsByTagName("meta")[5].content;
     document.getElementsByTagName("meta")[5].remove();
+    document.getElementById("card").style.height = panelSizes.homePanel;
 
     if (Math.floor(Math.random() * 2) == 0)
-        randomQuery = "cliffs";
+        randomQuery = "cliff";
     else
         randomQuery = "city";
 
@@ -37,8 +20,6 @@
     document.body.style.backgroundImage = "url(" + upInfo.urls.full + ")";
     document.getElementById("attribution").setAttribute("href", upInfo.user.links.html + "?utm_source=TGPSI%20Share&utm_medium=referral");
     document.querySelector("#attribution > span").innerHTML = upInfo.user.name;
-
-    //#endregion UNSPLASH BACKGROUND
 
     let urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get("dl") != null) {

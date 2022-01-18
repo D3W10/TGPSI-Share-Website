@@ -114,8 +114,6 @@ hr {
 }
 
 #card > div {
-    flex-direction: column;
-    align-items: center;
     transition: opacity 0.4s;
 }
 
